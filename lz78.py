@@ -54,14 +54,12 @@ def LZ78_encoding(source_data):
     encoding_pointer = 0
     while encoding_pointer < total_len:
         entry_length = 1
-        while True:
-            if encoding_pointer+entry_length>total_len:
-                break
-            entry = source_data[encoding_pointer: encoding_pointer+entry_length]
-            if entry not in dictionary.keys():
-                break
-            entry_length += 1
-        if entry_length>1:
+        while encoding_pointer + entry_length < total_len and\
+              source_data[encoding_pointer: encoding_pointer+entry_length] in dictionary:
+              entry_length += 1
+
+        entry = source_data[encoding_pointer: encoding_pointer+entry_length]
+        if entry_length > 1:
             prefix = entry[:-1]
             index = dictionary[prefix]
             index_high = index >> 8
